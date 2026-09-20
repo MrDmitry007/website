@@ -1,0 +1,1175 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QWENWORK - Безопасная подработка 14+</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            'heading': ['Inter', 'system-ui', 'sans-serif'],
+            'mono': ['JetBrains Mono', 'monospace'],
+          },
+          colors: {
+            brand: {
+              'purple': '#8b5cf6',
+              'indigo': '#6366f1',
+              'mint': '#10b981',
+              'mintHover': '#059669',
+              'yellow': '#fbbf24',
+              'pink': '#ec4899',
+              'dark': '#0f172a',
+              'surface': '#1e293b',
+              'card': '#1e293b',
+              'cardHover': '#334155',
+              'border': '#334155',
+            }
+          },
+          boxShadow: {
+            'neo': '4px 4px 0px 0px rgba(16, 185, 129, 0.3)',
+            'neo-yellow': '4px 4px 0px 0px rgba(251, 191, 36, 0.4)',
+            'neo-pink': '4px 4px 0px 0px rgba(236, 72, 153, 0.4)',
+            'glow-purple': '0 0 40px rgba(139, 92, 246, 0.3)',
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&family=JetBrains+Mono&display=swap');
+    
+    body {
+      background-color: #0f172a;
+      font-family: 'Inter', sans-serif;
+    }
+    
+    .badge-tilt-1 {
+      transform: rotate(-3deg);
+    }
+    
+    .badge-tilt-2 {
+      transform: rotate(3deg);
+    }
+    
+    .category-btn.active {
+      background-color: #10b981 !important;
+      color: #0f172a !important;
+      border-color: #10b981 !important;
+    }
+    
+    .calc-rate-btn.active {
+      background-color: #10b981 !important;
+      color: #0f172a !important;
+      border-color: #10b981 !important;
+    }
+    
+    .accordion-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease-out;
+    }
+    
+    .accordion-content.open {
+      max-height: 500px;
+    }
+    
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #10b981;
+      color: #0f172a;
+      padding: 0.75rem 1.5rem;
+      border-radius: 0.75rem;
+      font-weight: 600;
+      box-shadow: 0 10px 25px rgba(16, 185, 129, 0.3);
+      z-index: 9999;
+      animation: slideUp 0.3s ease-out;
+    }
+    
+    @keyframes slideUp {
+      from {
+        transform: translateX(-50%) translateY(100%);
+        opacity: 0;
+      }
+      to {
+        transform: translateX(-50%) translateY(0);
+        opacity: 1;
+      }
+    }
+  </style>
+</head>
+<body class="text-slate-200">
+
+<!-- Header -->
+<div class="sticky top-0 z-50 bg-brand-dark/95 backdrop-blur-md border-b border-brand-border">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="flex items-center justify-between h-16 gap-4">
+    <!-- Logo -->
+    <a href="#" class="flex items-center gap-3 group">
+      <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-brand-purple to-brand-indigo flex items-center justify-center border-2 border-brand-mint shadow-neo transition-transform group-hover:scale-105">
+        <i data-lucide="shield-check" class="w-6 h-6 text-brand-mint stroke-[2.5]"></i>
+      </div>
+      <div>
+        <div class="flex items-center gap-1.5">
+          <span class="font-heading font-black text-xl tracking-tight text-white">QWEN<span class="text-brand-mint">WORK</span></span>
+          <span class="text-[10px] uppercase font-bold tracking-wider bg-brand-yellow text-brand-dark px-1.5 py-0.5 rounded font-heading">14-17</span>
+        </div>
+        <p class="text-xs text-slate-400 font-medium">Безопасная подработка рядом</p>
+      </div>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8 text-sm font-semibold">
+      <a href="#vacancies" class="text-slate-300 hover:text-brand-mint transition-colors flex items-center gap-1.5">
+        <i data-lucide="briefcase" class="w-4 h-4"></i> Вакансии
+      </a>
+      <a href="#safety" class="text-slate-300 hover:text-brand-mint transition-colors flex items-center gap-1.5">
+        <i data-lucide="shield" class="w-4 h-4"></i> Гарантии
+      </a>
+      <a href="#calculator" class="text-slate-300 hover:text-brand-mint transition-colors flex items-center gap-1.5">
+        <i data-lucide="calculator" class="w-4 h-4"></i> Калькулятор дохода
+      </a>
+      <a href="#parents" class="text-slate-300 hover:text-brand-mint transition-colors flex items-center gap-1.5">
+        <i data-lucide="heart-handshake" class="w-4 h-4"></i> Родителям
+      </a>
+    </nav>
+
+    <!-- User Controls -->
+    <div class="flex items-center gap-3">
+      <div id="userBalanceBadge" class="hidden sm:flex items-center gap-2 px-3.5 py-1.5 bg-brand-surface rounded-xl border border-brand-border">
+        <span class="w-2 h-2 rounded-full bg-brand-mint animate-pulse"></span>
+        <span class="text-xs text-slate-300">Баланс:</span>
+        <span id="headerBalance" class="text-xs font-bold text-brand-yellow">1 850 ₽</span>
+      </div>
+
+      <button onclick="toggleAuthModal()" class="flex items-center gap-2 bg-gradient-to-r from-brand-purple to-brand-indigo hover:brightness-110 text-white font-heading font-semibold text-xs sm:text-sm px-4 py-2.5 rounded-xl border-2 border-brand-mint shadow-neo transition-all active:translate-x-1 active:translate-y-1 active:shadow-none">
+        <i data-lucide="send" class="w-4 h-4 text-brand-mint"></i>
+        <span id="authBtnLabel">Войти в 1 клик</span>
+      </button>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- Hero Section -->
+<section class="relative pt-10 pb-16 md:pt-16 md:pb-24 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
+  
+  <div class="flex flex-wrap items-center gap-2 mb-6">
+    <span class="inline-flex items-center gap-2 bg-brand-purple/40 border border-brand-purple text-brand-mint px-3.5 py-1.5 rounded-full text-xs font-semibold tracking-wide backdrop-blur-sm">
+      <i data-lucide="badge-check" class="w-4 h-4 text-brand-mint"></i>
+      Без резюме и 18+ ограничений
+    </span>
+    <span class="inline-flex items-center gap-1.5 bg-brand-yellow/15 border border-brand-yellow/40 text-brand-yellow px-3 py-1.5 rounded-full text-xs font-semibold">
+      ⚡ Выплаты сегодня на любую карту
+    </span>
+  </div>
+
+  <div class="grid lg:grid-cols-12 gap-10 items-center">
+    
+    <div class="lg:col-span-7">
+      <h1 class="font-heading text-3xl sm:text-4xl lg:text-5xl font-black tracking-tight leading-[1.15] text-white uppercase mb-6">
+        Первые деньги <br class="hidden sm:inline"/>
+        <span class="text-transparent bg-clip-text bg-gradient-to-r from-brand-mint via-brand-yellow to-brand-mint">
+          без риска и обмана.
+        </span><br/>
+        Легально 14+.
+      </h1>
+      <p class="text-slate-300 text-base sm:text-lg max-w-2xl leading-relaxed mb-8">
+        Проверенные микро-вакансии от кофеен, магазинов и ивентов твоего района. 
+        Смены от 2 до 4 часов, безопасная сделка и белые выплаты без бюрократии.
+      </p>
+
+      <!-- Search Widget -->
+      <div class="bg-brand-card p-3 sm:p-4 rounded-2xl border-2 border-brand-border shadow-2xl max-w-2xl">
+        <div class="flex flex-col sm:flex-row gap-3">
+          <div class="relative flex-grow">
+            <i data-lucide="map-pin" class="w-5 h-5 text-brand-mint absolute left-3.5 top-1/2 -translate-y-1/2"></i>
+            <input 
+              type="text" 
+              id="heroLocationInput"
+              placeholder="Введи метро или район (напр. Центр)" 
+              class="w-full bg-brand-surface text-sm text-white placeholder-slate-400 pl-11 pr-4 py-3 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint transition-colors"
+            />
+          </div>
+          <button 
+            onclick="searchFromHero()"
+            class="bg-brand-mint hover:bg-brand-mintHover text-brand-dark font-heading font-bold text-sm px-6 py-3.5 rounded-xl transition-all shadow-neo flex items-center justify-center gap-2 active:translate-x-0.5 active:translate-y-0.5 whitespace-nowrap">
+            <i data-lucide="search" class="w-4 h-4"></i>
+            Найти смену
+          </button>
+        </div>
+
+        <!-- Fast Quick-tags -->
+        <div class="flex items-center gap-2 mt-4 pt-3 border-t border-brand-border/60 overflow-x-auto pb-1 text-xs">
+          <span class="text-slate-400 whitespace-nowrap font-medium">Популярно:</span>
+          <button onclick="setCategoryFilter('courier')" class="px-2.5 py-1 rounded-lg bg-brand-surface hover:bg-brand-purple/40 text-slate-200 border border-brand-border whitespace-nowrap transition-colors">🚲 Курьер</button>
+          <button onclick="setCategoryFilter('promo')" class="px-2.5 py-1 rounded-lg bg-brand-surface hover:bg-brand-purple/40 text-slate-200 border border-brand-border whitespace-nowrap transition-colors">📢 Промоутер</button>
+          <button onclick="setCategoryFilter('online')" class="px-2.5 py-1 rounded-lg bg-brand-surface hover:bg-brand-purple/40 text-slate-200 border border-brand-border whitespace-nowrap transition-colors">💻 На дому</button>
+          <button onclick="setCategoryFilter('events')" class="px-2.5 py-1 rounded-lg bg-brand-surface hover:bg-brand-purple/40 text-slate-200 border border-brand-border whitespace-nowrap transition-colors">🎪 Ивенты</button>
+        </div>
+      </div>
+
+      <!-- Key Metrics -->
+      <div class="grid grid-cols-3 gap-3 sm:gap-6 mt-8 max-w-xl">
+        <div class="bg-brand-card/70 border border-brand-border rounded-xl p-3">
+          <p class="font-heading font-black text-xl sm:text-2xl text-brand-mint">100%</p>
+          <p class="text-xs text-slate-400 mt-1 leading-tight">Проверено по ИНН и базам</p>
+        </div>
+        <div class="bg-brand-card/70 border border-brand-border rounded-xl p-3">
+          <p class="font-heading font-black text-xl sm:text-2xl text-brand-yellow">1 850 ₽</p>
+          <p class="text-xs text-slate-400 mt-1 leading-tight">Средний чек за 3 часа смены</p>
+        </div>
+        <div class="bg-brand-card/70 border border-brand-border rounded-xl p-3">
+          <p class="font-heading font-black text-xl sm:text-2xl text-brand-indigo">0 ₽</p>
+          <p class="text-xs text-slate-400 mt-1 leading-tight">Никаких взносов за старт</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Visual Hero Card -->
+    <div class="lg:col-span-5 relative">
+      <div class="relative mx-auto max-w-md">
+        
+        <div class="absolute -top-5 -left-4 z-20 bg-brand-yellow text-brand-dark px-3 py-1.5 rounded-lg font-heading font-black text-xs shadow-neo-yellow badge-tilt-1 flex items-center gap-1.5">
+          <i data-lucide="zap" class="w-4 h-4 fill-brand-dark"></i> ДЕНЬГИ В ТОТ ЖЕ ДЕНЬ
+        </div>
+
+        <div class="absolute -bottom-4 -right-2 z-20 bg-brand-pink text-white px-3 py-1.5 rounded-lg font-heading font-bold text-xs shadow-neo-pink badge-tilt-2 flex items-center gap-1.5">
+          <i data-lucide="check-check" class="w-4 h-4"></i> БЕЗ СКАМА
+        </div>
+
+        <div class="bg-brand-card rounded-3xl border-2 border-brand-border p-5 shadow-glow-purple relative overflow-hidden">
+          <div class="flex items-center justify-between border-b border-brand-border pb-3 mb-4">
+            <div class="flex items-center gap-2">
+              <div class="w-3 h-3 rounded-full bg-red-500"></div>
+              <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+              <div class="w-3 h-3 rounded-full bg-emerald-500"></div>
+            </div>
+            <span class="text-[11px] font-mono text-brand-mint uppercase tracking-wider">Live Смена #419</span>
+          </div>
+
+          <div class="bg-brand-surface rounded-2xl p-4 border border-brand-border mb-4">
+            <div class="flex justify-between items-start">
+              <div>
+                <span class="text-[10px] font-bold uppercase tracking-wider text-brand-yellow bg-brand-yellow/10 px-2 py-0.5 rounded">Пеший помощник</span>
+                <h3 class="font-heading font-bold text-base text-white mt-1.5">Сеть кофеен «Surf & Bake»</h3>
+                <p class="text-xs text-slate-300 mt-1">Раздача промо-флаеров с напитками</p>
+              </div>
+              <span class="font-heading font-black text-brand-mint text-base whitespace-nowrap">1 900 ₽</span>
+            </div>
+
+            <div class="grid grid-cols-2 gap-2 mt-4 text-xs text-slate-300">
+              <div class="flex items-center gap-1.5 bg-brand-dark/50 p-2 rounded-lg">
+                <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-mint"></i>
+                <span>3 часа (15:00-18:00)</span>
+              </div>
+              <div class="flex items-center gap-1.5 bg-brand-dark/50 p-2 rounded-lg">
+                <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-yellow"></i>
+                <span>350 м от м. Маяковская</span>
+              </div>
+            </div>
+
+            <div class="mt-4 pt-3 border-t border-brand-border/60 flex items-center justify-between">
+              <div class="flex items-center gap-1.5 text-emerald-400 text-xs font-semibold">
+                <i data-lucide="shield-alert" class="w-4 h-4"></i>
+                <span>Оплата задепонирована</span>
+              </div>
+              <span class="text-[11px] text-slate-400">Свободно 2 места</span>
+            </div>
+          </div>
+
+          <div class="space-y-2.5">
+            <div class="flex items-center gap-2.5 text-xs text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-brand-mint/20 text-brand-mint flex items-center justify-center shrink-0">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span>Работодатель подтвердил паспорт и ОГРНИП</span>
+            </div>
+            <div class="flex items-center gap-2.5 text-xs text-slate-300">
+              <div class="w-5 h-5 rounded-full bg-brand-mint/20 text-brand-mint flex items-center justify-center shrink-0">
+                <i data-lucide="check" class="w-3.5 h-3.5"></i>
+              </div>
+              <span>Оплата переводится сразу по завершению задания</span>
+            </div>
+          </div>
+
+          <button onclick="demoLiveApply()" id="liveDemoCardBtn" class="mt-5 w-full bg-gradient-to-r from-brand-indigo to-brand-purple hover:brightness-110 text-white font-heading font-bold text-xs py-3 rounded-xl border border-brand-mint/50 transition-all flex items-center justify-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4 text-brand-mint"></i>
+            <span id="liveDemoBtnText">Проверить моментальный отклик</span>
+          </button>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- Safety / Trust Triggers -->
+<section id="safety" class="py-14 bg-brand-card/40 border-y border-brand-border relative">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center max-w-3xl mx-auto mb-12">
+      <div class="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-brand-surface border border-brand-border text-brand-yellow text-xs font-semibold mb-3">
+        <i data-lucide="shield-check" class="w-4 h-4 text-brand-yellow"></i>
+        Почему мы не скам
+      </div>
+      <h2 class="font-heading text-2xl sm:text-3xl lg:text-4xl font-black text-white uppercase tracking-tight">
+        Тройная защита от <span class="text-brand-pink">обмана и серых схем</span>
+      </h2>
+      <p class="text-slate-300 text-sm sm:text-base mt-3">
+        Мы лично тестируем каждого заказчика. Никаких «залогов за материал», подозрительных курьеров и бесконечных неоплачиваемых стажировок.
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-6">
+      <div class="bg-brand-card rounded-2xl p-6 border-2 border-brand-border hover:border-brand-mint transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 rounded-xl bg-brand-mint/10 border border-brand-mint flex items-center justify-center text-brand-mint mb-5 group-hover:scale-110 transition-transform">
+          <i data-lucide="scale" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-heading font-bold text-lg text-white mb-2">Строго по ТК РФ (14+)</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Не более 2.5–4 часов в день во внеучебное время. Никаких ночных смен, опасных производств или подъема тяжестей. Всё в рамках закона РФ.
+        </p>
+        <div class="mt-4 pt-3 border-t border-brand-border text-xs text-brand-mint font-semibold flex items-center gap-1">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i> Без вреда для учебы
+        </div>
+      </div>
+
+      <div class="bg-brand-card rounded-2xl p-6 border-2 border-brand-border hover:border-brand-yellow transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 rounded-xl bg-brand-yellow/10 border border-brand-yellow flex items-center justify-center text-brand-yellow mb-5 group-hover:scale-110 transition-transform">
+          <i data-lucide="lock" class="w-6 h-6"></i>
+        </div>
+        <h3 class="font-heading font-bold text-lg text-white mb-2">Безопасная сделка (Эскроу)</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Заказчик переводит деньги на счет платформы ДО начала твоей смены. Когда задание выполнено — деньги мгновенно поступают на твою карту или СБП.
+        </p>
+        <div class="mt-4 pt-3 border-t border-brand-border text-xs text-brand-yellow font-semibold flex items-center gap-1">
+          <i data-lucide="check" class="w-3.5 h-3.5"></i> Гарантия 100% выплаты
+        </div>
+      </div>
+
+      <div class="bg-brand-card rounded-2xl p-6 border-2 border-brand-border hover:border-brand-purple transition-all hover:-translate-y-1 group">
+        <div class="w-12 h-12 rounded-xl bg-brand-purple/20 border border-brand-purple flex items-center justify-center text-brand-indigo mb-5 group-hover:scale-110 transition-transform">
+          <i data-lucide="user-check" class="w-6 h-6 text-brand-mint"></i>
+        </div>
+        <h3 class="font-heading font-bold text-lg text-white mb-2">Ручной скоринг компаний</h3>
+        <p class="text-sm text-slate-300 leading-relaxed">
+          Модераторы проверяют ИНН, регистрацию в налоговой, отзывы и локацию. Любые сомнительные вакансии блокируются до публикации.
+        </p>
+        <div class="mt-4 pt-3 border-t border-brand-border text-xs text-slate-300 font-semibold flex items-center gap-1">
+          <i data-lucide="check" class="w-3.5 h-3.5 text-brand-mint"></i> 0% сомнительных предложений
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Vacancies Feed -->
+<section id="vacancies" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  
+  <div class="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
+    <div>
+      <span class="text-xs uppercase font-heading font-bold tracking-wider text-brand-mint">Биржа проверенных заказов</span>
+      <h2 class="font-heading text-2xl sm:text-3xl font-black text-white uppercase mt-1">Доступные смены рядом</h2>
+      <p class="text-sm text-slate-400 mt-1">Откликайся без резюме — подтверждение за 5 минут</p>
+    </div>
+
+    <div class="flex items-center gap-2">
+      <span class="text-xs text-slate-400">Найдено: <strong id="jobsCountBadge" class="text-brand-mint">6</strong> предложений</span>
+    </div>
+  </div>
+
+  <!-- Filters Panel -->
+  <div class="bg-brand-card p-4 rounded-2xl border border-brand-border mb-8 space-y-4">
+    
+    <div class="flex items-center gap-2 overflow-x-auto pb-1">
+      <button onclick="setCategoryFilter('all')" id="btnFilterAll" class="category-btn active px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all bg-brand-mint text-brand-dark shadow-neo">
+        Все категории
+      </button>
+      <button onclick="setCategoryFilter('courier')" id="btnFilterCourier" class="category-btn px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all bg-brand-surface text-slate-300 hover:text-white border border-brand-border">
+        🚲 Курьер / Доставка
+      </button>
+      <button onclick="setCategoryFilter('promo')" id="btnFilterPromo" class="category-btn px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all bg-brand-surface text-slate-300 hover:text-white border border-brand-border">
+        📢 Раздача флаеров
+      </button>
+      <button onclick="setCategoryFilter('assistant')" id="btnFilterAssistant" class="category-btn px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all bg-brand-surface text-slate-300 hover:text-white border border-brand-border">
+        📦 Помощник / Склад
+      </button>
+      <button onclick="setCategoryFilter('online')" id="btnFilterOnline" class="category-btn px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all bg-brand-surface text-slate-300 hover:text-white border border-brand-border">
+        💻 Онлайн / IT
+      </button>
+      <button onclick="setCategoryFilter('events')" id="btnFilterEvents" class="category-btn px-4 py-2 rounded-xl text-xs font-heading font-bold transition-all bg-brand-surface text-slate-300 hover:text-white border border-brand-border">
+        🎪 Фестивали / Ивенты
+      </button>
+    </div>
+
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 pt-2 border-t border-brand-border/60">
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Поиск по названию или метро:</label>
+        <div class="relative">
+          <i data-lucide="search" class="w-4 h-4 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2"></i>
+          <input 
+            type="text" 
+            id="filterKeywordInput" 
+            oninput="applyFilters()"
+            placeholder="Кофейня, Чистые пруды..." 
+            class="w-full bg-brand-surface text-xs text-white placeholder-slate-400 pl-9 pr-3 py-2 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint"
+          />
+        </div>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Длительность смены:</label>
+        <select id="filterHoursSelect" onchange="applyFilters()" class="w-full bg-brand-surface text-xs text-white px-3 py-2 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint">
+          <option value="any">Любая (до 4 часов по закону)</option>
+          <option value="2">До 2 часов</option>
+          <option value="3">До 3 часов</option>
+          <option value="4">4 часа</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-[11px] font-semibold text-slate-400 mb-1">Оплата за смену:</label>
+        <select id="filterPaySelect" onchange="applyFilters()" class="w-full bg-brand-surface text-xs text-white px-3 py-2 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint">
+          <option value="0">Любая сумма</option>
+          <option value="1200">От 1 200 ₽</option>
+          <option value="1600">От 1 600 ₽</option>
+          <option value="2000">От 2 000 ₽</option>
+        </select>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Jobs Grid -->
+  <div id="jobsGrid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+
+  <!-- Empty State -->
+  <div id="jobsEmptyState" class="hidden text-center py-16 bg-brand-card rounded-2xl border border-brand-border">
+    <div class="w-16 h-16 bg-brand-surface rounded-full flex items-center justify-center mx-auto mb-4 text-slate-400">
+      <i data-lucide="search-x" class="w-8 h-8"></i>
+    </div>
+    <h3 class="font-heading font-bold text-lg text-white">Нет подходящих вакансий</h3>
+    <p class="text-xs text-slate-400 mt-1 max-w-sm mx-auto">Попробуйте сбросить фильтры или выбрать другой район города</p>
+    <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-brand-surface border border-brand-mint text-brand-mint text-xs font-semibold rounded-xl hover:bg-brand-mint hover:text-brand-dark transition-colors">
+      Сбросить фильтры
+    </button>
+  </div>
+
+</section>
+
+<!-- Earnings Calculator -->
+<section id="calculator" class="py-16 bg-brand-card/40 border-y border-brand-border">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="text-center mb-10">
+      <span class="text-xs uppercase font-heading font-bold tracking-wider text-brand-yellow">Интерактивный расчет</span>
+      <h2 class="font-heading text-2xl sm:text-3xl font-black text-white uppercase mt-1">Сколько ты можешь заработать?</h2>
+      <p class="text-sm text-slate-300 mt-2">Посчитай, как быстро накопить на кроссовки, наушники или новый телефон без ущерба для школы</p>
+    </div>
+
+    <div class="bg-brand-card rounded-3xl border-2 border-brand-border p-6 sm:p-10 shadow-2xl">
+      <div class="grid md:grid-cols-12 gap-8 items-center">
+        
+        <div class="md:col-span-7 space-y-6">
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-semibold text-slate-200">Часов в день:</span>
+              <span id="calcHoursLabel" class="font-heading font-bold text-brand-mint text-base bg-brand-surface px-3 py-1 rounded-lg border border-brand-border">3 часа</span>
+            </div>
+            <input 
+              type="range" 
+              id="calcHoursRange" 
+              min="2" 
+              max="4" 
+              value="3" 
+              step="0.5" 
+              oninput="updateCalculator()" 
+              class="w-full h-3"
+            />
+            <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+              <span>2 часа (легко)</span>
+              <span>3 часа</span>
+              <span>4 часа (максимум для 14-15 лет)</span>
+            </div>
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center mb-2">
+              <span class="text-sm font-semibold text-slate-200">Дней в неделю:</span>
+              <span id="calcDaysLabel" class="font-heading font-bold text-brand-yellow text-base bg-brand-surface px-3 py-1 rounded-lg border border-brand-border">3 дня</span>
+            </div>
+            <input 
+              type="range" 
+              id="calcDaysRange" 
+              min="1" 
+              max="5" 
+              value="3" 
+              step="1" 
+              oninput="updateCalculator()" 
+              class="w-full h-3"
+            />
+            <div class="flex justify-between text-[11px] text-slate-400 mt-1">
+              <span>1 день (только суббота)</span>
+              <span>3 дня (комфортно)</span>
+              <span>5 дней</span>
+            </div>
+          </div>
+
+          <div class="pt-2">
+            <span class="text-xs text-slate-400 block mb-2">Тип деятельности:</span>
+            <div class="grid grid-cols-3 gap-2">
+              <button type="button" onclick="setCalcRate(550, this)" class="calc-rate-btn active text-xs font-semibold py-2 px-3 rounded-xl border border-brand-mint bg-brand-mint text-brand-dark transition-all">
+                Промо (550 ₽/ч)
+              </button>
+              <button type="button" onclick="setCalcRate(650, this)" class="calc-rate-btn text-xs font-semibold py-2 px-3 rounded-xl border border-brand-border bg-brand-surface text-slate-300 hover:text-white transition-all">
+                Курьер (650 ₽/ч)
+              </button>
+              <button type="button" onclick="setCalcRate(750, this)" class="calc-rate-btn text-xs font-semibold py-2 px-3 rounded-xl border border-brand-border bg-brand-surface text-slate-300 hover:text-white transition-all">
+                Онлайн (750 ₽/ч)
+              </button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Result Box -->
+        <div class="md:col-span-5 bg-brand-surface rounded-2xl p-6 border-2 border-brand-border text-center relative overflow-hidden">
+          <div class="absolute -top-10 -right-10 w-32 h-32 bg-brand-mint/10 rounded-full blur-xl"></div>
+          
+          <p class="text-xs uppercase font-heading font-bold text-slate-400">Твой доход за месяц</p>
+          <div class="mt-2 flex items-baseline justify-center gap-1">
+            <span id="calcMonthlyTotal" class="font-heading font-black text-4xl sm:text-5xl text-brand-mint tracking-tight">19 800</span>
+            <span class="font-heading font-black text-2xl text-brand-mint">₽</span>
+          </div>
+          <p id="calcWeeklyNote" class="text-xs text-slate-300 mt-1">≈ 4 950 ₽ в неделю</p>
+
+          <div class="mt-6 pt-6 border-t border-brand-border/70 text-left">
+            <div class="flex justify-between text-xs mb-1.5">
+              <span class="text-slate-300 font-medium">🎯 Цель: <span id="calcGoalTitle" class="text-brand-yellow font-semibold">AirPods Pro</span></span>
+              <span id="calcGoalWeeks" class="text-brand-mint font-bold">~ 4 недели</span>
+            </div>
+            <div class="w-full bg-brand-dark h-2.5 rounded-full overflow-hidden">
+              <div id="calcProgressBar" class="bg-gradient-to-r from-brand-indigo to-brand-mint h-full rounded-full transition-all duration-500" style="width: 75%;"></div>
+            </div>
+          </div>
+
+          <a href="#vacancies" class="mt-6 w-full inline-flex items-center justify-center gap-2 bg-brand-mint hover:bg-brand-mintHover text-brand-dark font-heading font-bold text-xs py-3 rounded-xl transition-all shadow-neo">
+            Подобрать вакансии
+            <i data-lucide="arrow-right" class="w-4 h-4"></i>
+          </a>
+
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- Social Proof / Reviews -->
+<section class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+  <div class="text-center max-w-2xl mx-auto mb-12">
+    <span class="text-xs uppercase font-heading font-bold tracking-wider text-brand-mint">Реальные отзывы</span>
+    <h2 class="font-heading text-2xl sm:text-3xl font-black text-white uppercase mt-1">Пруфы выплат из нашего Telegram</h2>
+    <p class="text-sm text-slate-400 mt-2">Ребята делятся скриншотами переводов и впечатлениями после первых смен</p>
+  </div>
+
+  <div class="grid md:grid-cols-3 gap-6">
+    <div class="bg-brand-card p-5 rounded-2xl border border-brand-border flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-full bg-brand-purple flex items-center justify-center font-heading font-bold text-sm text-white">
+              МК
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Макс, 15 лет</h3>
+              <span class="text-[11px] text-slate-400">Раздача в кофейне • 3 смены</span>
+            </div>
+          </div>
+          <span class="text-brand-yellow flex items-center text-xs gap-0.5">★★★★★</span>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          «Сначала боялся, что проработаю 3 часа на холоде и сольются, как на Авито. Но тут деньги сразу повисли на балансе в приложении, а после смены админ подтвердил за 3 минуты. Уже перевел на карту!»
+        </p>
+      </div>
+      <div class="bg-brand-surface p-3 rounded-xl border border-brand-border flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <i data-lucide="arrow-down-left" class="w-4 h-4 text-brand-mint"></i>
+          <div>
+            <p class="font-semibold text-white">+1 650 ₽</p>
+            <p class="text-[10px] text-slate-400">СБП Перевод: QwenWork</p>
+          </div>
+        </div>
+        <span class="text-[10px] bg-brand-mint/10 text-brand-mint px-2 py-0.5 rounded font-mono font-bold">УСПЕШНО</span>
+      </div>
+    </div>
+
+    <div class="bg-brand-card p-5 rounded-2xl border border-brand-border flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-full bg-brand-indigo flex items-center justify-center font-heading font-bold text-sm text-white">
+              АС
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Алина, 16 лет</h3>
+              <span class="text-[11px] text-slate-400">Помощник на маркете • 5 смен</span>
+            </div>
+          </div>
+          <span class="text-brand-yellow flex items-center text-xs gap-0.5">★★★★★</span>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          «Круто, что родители не паникуют. Мама сначала прочитала их раздел для родителей, а согласие подписала за минуту через СМС код. Работали в субботу на книжной ярмарке, было очень весело».
+        </p>
+      </div>
+      <div class="bg-brand-surface p-3 rounded-xl border border-brand-border flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <i data-lucide="arrow-down-left" class="w-4 h-4 text-brand-mint"></i>
+          <div>
+            <p class="font-semibold text-white">+2 400 ₽</p>
+            <p class="text-[10px] text-slate-400">СБП Перевод: QwenWork</p>
+          </div>
+        </div>
+        <span class="text-[10px] bg-brand-mint/10 text-brand-mint px-2 py-0.5 rounded font-mono font-bold">УСПЕШНО</span>
+      </div>
+    </div>
+
+    <div class="bg-brand-card p-5 rounded-2xl border border-brand-border flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-4">
+          <div class="flex items-center gap-2.5">
+            <div class="w-10 h-10 rounded-full bg-brand-mint text-brand-dark flex items-center justify-center font-heading font-bold text-sm">
+              ДИ
+            </div>
+            <div>
+              <h3 class="text-sm font-bold text-white">Даня, 14 лет</h3>
+              <span class="text-[11px] text-slate-400">Модерация карточек онлайн</span>
+            </div>
+          </div>
+          <span class="text-brand-yellow flex items-center text-xs gap-0.5">★★★★★</span>
+        </div>
+        <p class="text-xs text-slate-300 leading-relaxed mb-4">
+          «Заполнял теги для интернет-магазина одежды прямо с ноутбука дома. 2 часа в день после уроков. Накопил сам на механическую клавиатуру! Никаких собеседований с камерой, все четко по заданию».
+        </p>
+      </div>
+      <div class="bg-brand-surface p-3 rounded-xl border border-brand-border flex items-center justify-between text-xs">
+        <div class="flex items-center gap-2">
+          <i data-lucide="arrow-down-left" class="w-4 h-4 text-brand-mint"></i>
+          <div>
+            <p class="font-semibold text-white">+1 500 ₽</p>
+            <p class="text-[10px] text-slate-400">СБП Перевод: QwenWork</p>
+          </div>
+        </div>
+        <span class="text-[10px] bg-brand-mint/10 text-brand-mint px-2 py-0.5 rounded font-mono font-bold">УСПЕШНО</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Parents Info Accordion -->
+<section id="parents" class="py-16 bg-brand-card/30 border-t border-brand-border">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    
+    <div class="bg-gradient-to-r from-brand-card to-brand-surface p-6 sm:p-10 rounded-3xl border-2 border-brand-border relative overflow-hidden">
+      
+      <div class="flex items-center gap-3 mb-6">
+        <div class="w-10 h-10 rounded-xl bg-brand-mint/20 text-brand-mint flex items-center justify-center">
+          <i data-lucide="heart-handshake" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h2 class="font-heading font-black text-xl sm:text-2xl text-white uppercase">Спокойствие для родителей</h2>
+          <p class="text-xs text-slate-400">Юридическая прозрачность и безопасность вашего подростка</p>
+        </div>
+      </div>
+
+      <div class="space-y-3">
+        <div class="accordion-item bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+          <button onclick="toggleAccordion(this)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-heading font-semibold text-slate-100 hover:text-brand-mint transition-colors">
+            <span>Законна ли подработка с 14 лет?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+          </button>
+          <div class="accordion-content hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-brand-border/40 pt-3">
+            Да, статья 63 Трудового кодекса РФ прямо разрешает выполнение легкого труда с 14 лет при согласии одного из родителей во внеучебное время без ущерба для учебы. Все вакансии на платформе строго соответствуют этим критериям.
+          </div>
+        </div>
+
+        <div class="accordion-item bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+          <button onclick="toggleAccordion(this)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-heading font-semibold text-slate-100 hover:text-brand-mint transition-colors">
+            <span>Как подтверждается согласие родителя?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+          </button>
+          <div class="accordion-content hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-brand-border/40 pt-3">
+            Без бумажной волокиты: при первой регистрации подростком родителю отправляется СМС со ссылкой на электронное подтверждение или вход через Госуслуги / СберKids. Это занимает 60 секунд.
+          </div>
+        </div>
+
+        <div class="accordion-item bg-brand-card rounded-xl border border-brand-border overflow-hidden">
+          <button onclick="toggleAccordion(this)" class="w-full px-5 py-4 text-left flex items-center justify-between text-sm font-heading font-semibold text-slate-100 hover:text-brand-mint transition-colors">
+            <span>Куда приходят заработанные деньги?</span>
+            <i data-lucide="chevron-down" class="w-4 h-4 transition-transform duration-200"></i>
+          </button>
+          <div class="accordion-content hidden px-5 pb-4 text-xs text-slate-300 leading-relaxed border-t border-brand-border/40 pt-3">
+            Выплаты осуществляются через Систему быстрых платежей (СБП) на детскую карту любого банка (Тинькофф Джуниор, СберKids, Альфа-Банк) без скрытых комиссий.
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 pt-5 border-t border-brand-border/70 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="text-xs text-slate-300 text-center sm:text-left">
+          Остались вопросы? Наш юрист ответит лично в чате поддержки:
+        </div>
+        <button onclick="openSupportToast()" class="px-4 py-2 bg-brand-surface border border-brand-border hover:border-brand-mint rounded-xl text-xs font-semibold text-white flex items-center gap-2 transition-colors">
+          <i data-lucide="message-circle" class="w-4 h-4 text-brand-mint"></i>
+          Чат поддержки для родителей
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="bg-brand-dark border-t border-brand-border py-12">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid md:grid-cols-4 gap-8">
+      <div>
+        <div class="flex items-center gap-2 mb-4">
+          <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-brand-purple to-brand-indigo flex items-center justify-center border border-brand-mint">
+            <i data-lucide="shield-check" class="w-5 h-5 text-brand-mint"></i>
+          </div>
+          <span class="font-heading font-black text-lg text-white">QWEN<span class="text-brand-mint">WORK</span></span>
+        </div>
+        <p class="text-xs text-slate-400 leading-relaxed">
+          Безопасная платформа для подростковой подработки с гарантией выплат и защитой от мошенников.
+        </p>
+      </div>
+      
+      <div>
+        <h4 class="font-heading font-bold text-sm text-white mb-3">Навигация</h4>
+        <div class="flex flex-col gap-2">
+          <a href="#vacancies" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Каталог смен</a>
+          <a href="#safety" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Безопасная сделка</a>
+          <a href="#parents" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Памятка родителям</a>
+          <a href="#" onclick="showToast('Пользовательское соглашение и оферта ст. 63 ТК РФ')" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Оферта</a>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="font-heading font-bold text-sm text-white mb-3">Поддержка</h4>
+        <div class="flex flex-col gap-2">
+          <a href="#" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Чат поддержки</a>
+          <a href="#" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Telegram канал</a>
+          <a href="#" class="text-xs text-slate-400 hover:text-brand-mint transition-colors">Вопросы и ответы</a>
+        </div>
+      </div>
+      
+      <div>
+        <h4 class="font-heading font-bold text-sm text-white mb-3">Фирменная ссылка</h4>
+        <a href="https://qwen.ai" target="_blank" class="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-brand-purple to-brand-indigo hover:brightness-110 text-white font-heading font-bold text-xs rounded-xl border border-brand-mint shadow-neo transition-all">
+          <i data-lucide="external-link" class="w-3.5 h-3.5"></i>
+          qwen.ai
+        </a>
+        <p class="text-[10px] text-slate-500 mt-2">Powered by Qwen AI</p>
+      </div>
+    </div>
+    
+    <div class="mt-8 pt-6 border-t border-brand-border text-center">
+      <p class="text-xs text-slate-500">
+        © 2026 QwenWork. Все права защищены. Сервис работает в соответствии со ст. 63 ТК РФ.
+      </p>
+    </div>
+  </div>
+</footer>
+
+<!-- Quick Apply Modal -->
+<div id="quickApplyModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+  <div class="bg-brand-card rounded-3xl border-2 border-brand-border max-w-md w-full p-6 relative">
+    <button onclick="closeQuickApplyModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-brand-surface p-2 rounded-xl transition-colors">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="flex items-center gap-2 text-xs font-heading font-bold text-brand-mint uppercase mb-2">
+      <i data-lucide="zap" class="w-4 h-4"></i> Быстрый отклик без резюме
+    </div>
+
+    <h3 id="modalJobTitle" class="font-heading font-black text-xl text-white">Название вакансии</h3>
+    <p id="modalCompanyInfo" class="text-xs text-brand-yellow mt-1 font-medium">Компания • Ставка</p>
+
+    <div class="mt-5 space-y-3.5 text-xs">
+      <div>
+        <label class="block text-slate-300 font-semibold mb-1">Как тебя зовут?</label>
+        <input type="text" id="applyUserName" placeholder="Например: Артем" value="Артем" class="w-full bg-brand-surface text-white px-3.5 py-2.5 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint">
+      </div>
+
+      <div>
+        <label class="block text-slate-300 font-semibold mb-1">Твой возраст:</label>
+        <select id="applyUserAge" class="w-full bg-brand-surface text-white px-3.5 py-2.5 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint">
+          <option value="14">14 лет (смены до 2.5 часов)</option>
+          <option value="15" selected>15 лет (смены до 3 часов)</option>
+          <option value="16">16 лет (смены до 4 часов)</option>
+          <option value="17">17 лет (смены до 4 часов)</option>
+        </select>
+      </div>
+
+      <div>
+        <label class="block text-slate-300 font-semibold mb-1">Телефон или Telegram для связи менеджера:</label>
+        <input type="text" id="applyUserContact" placeholder="@username или +7..." value="@artem_teen" class="w-full bg-brand-surface text-white px-3.5 py-2.5 rounded-xl border border-brand-border focus:outline-none focus:border-brand-mint">
+      </div>
+
+      <label class="flex items-start gap-3 p-3 bg-brand-surface rounded-xl border border-brand-border cursor-pointer select-none">
+        <input type="checkbox" id="applyConsentCheckbox" checked class="mt-0.5 rounded text-brand-mint focus:ring-0">
+        <span class="text-[11px] text-slate-300 leading-snug">
+          Родители в курсе и не возражают против подработки во внеучебное время (ст. 63 ТК РФ)
+        </span>
+      </label>
+    </div>
+
+    <div class="mt-6 flex gap-3">
+      <button onclick="submitApplication()" class="w-full bg-brand-mint hover:bg-brand-mintHover text-brand-dark font-heading font-black text-sm py-3.5 rounded-xl transition-all shadow-neo active:translate-x-0.5 active:translate-y-0.5">
+        Подтвердить отклик ⚡
+      </button>
+    </div>
+
+    <p class="text-[10px] text-slate-400 text-center mt-3">
+      Оплата за эту смену уже заблокирована на счете сервиса. Тебя никто не обманет.
+    </p>
+  </div>
+</div>
+
+<!-- Auth Modal -->
+<div id="authModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+  <div class="bg-brand-card rounded-3xl border-2 border-brand-border max-w-sm w-full p-8 relative">
+    <button onclick="toggleAuthModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-brand-surface p-2 rounded-xl transition-colors">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="text-center">
+      <div class="w-14 h-14 bg-gradient-to-tr from-brand-indigo to-brand-purple rounded-2xl flex items-center justify-center mx-auto mb-4 border border-brand-mint text-brand-mint shadow-neo">
+        <i data-lucide="send" class="w-7 h-7"></i>
+      </div>
+      <h3 class="font-heading font-bold text-lg text-white">Вход через Telegram</h3>
+      <p class="text-xs text-slate-400 mt-1">Без паролей, подтверждений почты и бюрократии</p>
+    </div>
+
+    <div class="mt-6 space-y-3">
+      <button onclick="simulateTgLogin()" class="w-full bg-[#2AABEE] hover:brightness-110 text-white font-semibold text-xs py-3 rounded-xl flex items-center justify-center gap-2 transition-all">
+        <i data-lucide="send" class="w-4 h-4"></i>
+        Продолжить как @artem_teen
+      </button>
+      <button onclick="toggleAuthModal()" class="w-full bg-brand-surface hover:bg-brand-cardHover text-slate-300 text-xs py-2.5 rounded-xl border border-brand-border transition-colors">
+        Закрыть
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Applications Modal -->
+<div id="applicationsModal" class="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 hidden items-center justify-center p-4">
+  <div class="bg-brand-card rounded-3xl border-2 border-brand-border max-w-lg w-full p-6 relative max-h-[90vh] overflow-y-auto">
+    <button onclick="closeApplicationsModal()" class="absolute top-4 right-4 text-slate-400 hover:text-white bg-brand-surface p-2 rounded-xl transition-colors">
+      <i data-lucide="x" class="w-5 h-5"></i>
+    </button>
+
+    <div class="flex items-center gap-2 font-heading font-bold text-lg text-white mb-4">
+      <i data-lucide="clipboard-check" class="w-5 h-5 text-brand-mint"></i>
+      Мои отклики на смены
+    </div>
+
+    <div id="applicationsList" class="space-y-3 max-h-80 overflow-y-auto pr-1"></div>
+  </div>
+</div>
+
+<script>
+  // Initialize Lucide icons
+  lucide.createIcons();
+
+  // Sample job data
+  const jobs = [
+    {
+      id: 1,
+      title: 'Промоутер в кофейне',
+      company: 'Surf & Bake',
+      category: 'promo',
+      pay: 1650,
+      hours: 3,
+      location: 'м. Маяковская',
+      description: 'Раздача флаеров с напитками'
+    },
+    {
+      id: 2,
+      title: 'Курьер пеший',
+      company: 'Доставка Еды',
+      category: 'courier',
+      pay: 1950,
+      hours: 4,
+      location: 'м. Чистые пруды',
+      description: 'Доставка заказов в радиусе 2 км'
+    },
+    {
+      id: 3,
+      title: 'Модератор карточек',
+      company: 'Интернет-магазин',
+      category: 'online',
+      pay: 1500,
+      hours: 2,
+      location: 'Удаленно',
+      description: 'Заполнение тегов и описаний'
+    },
+    {
+      id: 4,
+      title: 'Помощник на складе',
+      company: 'Маркетплейс',
+      category: 'assistant',
+      pay: 1800,
+      hours: 3,
+      location: 'м. Павелецкая',
+      description: 'Сортировка легких товаров'
+    },
+    {
+      id: 5,
+      title: 'Промоутер на фестивале',
+      company: 'Event Agency',
+      category: 'events',
+      pay: 2200,
+      hours: 4,
+      location: 'Парк Горького',
+      description: 'Раздача пробников на фестивале'
+    },
+    {
+      id: 6,
+      title: 'Помощник бариста',
+      company: 'Кофейня "Утро"',
+      category: 'promo',
+      pay: 1700,
+      hours: 3,
+      location: 'м. Тверская',
+      description: 'Помощь на кассе и раздача напитков'
+    }
+  ];
+
+  let currentFilter = 'all';
+  let calcRate = 550;
+
+  // Render jobs
+  function renderJobs() {
+    const grid = document.getElementById('jobsGrid');
+    const emptyState = document.getElementById('jobsEmptyState');
+    const keyword = document.getElementById('filterKeywordInput').value.toLowerCase();
+    const hoursFilter = document.getElementById('filterHoursSelect').value;
+    const payFilter = parseInt(document.getElementById('filterPaySelect').value);
+
+    let filtered = jobs.filter(job => {
+      if (currentFilter !== 'all' && job.category !== currentFilter) return false;
+      if (keyword && !job.title.toLowerCase().includes(keyword) && !job.location.toLowerCase().includes(keyword)) return false;
+      if (hoursFilter !== 'any' && job.hours > parseInt(hoursFilter)) return false;
+      if (payFilter > 0 && job.pay < payFilter) return false;
+      return true;
+    });
+
+    if (filtered.length === 0) {
+      grid.innerHTML = '';
+      emptyState.classList.remove('hidden');
+      document.getElementById('jobsCountBadge').textContent = '0';
+      return;
+    }
+
+    emptyState.classList.add('hidden');
+    document.getElementById('jobsCountBadge').textContent = filtered.length;
+
+    grid.innerHTML = filtered.map(job => `
+      <div class="bg-brand-card rounded-2xl border-2 border-brand-border hover:border-brand-mint transition-all hover:-translate-y-1 p-5">
+        <div class="flex justify-between items-start mb-3">
+          <span class="text-[10px] font-bold uppercase tracking-wider text-brand-yellow bg-brand-yellow/10 px-2 py-0.5 rounded">${getCategoryLabel(job.category)}</span>
+          <span class="font-heading font-black text-brand-mint text-lg">${job.pay.toLocaleString()} ₽</span>
+        </div>
+        <h3 class="font-heading font-bold text-base text-white mb-1">${job.title}</h3>
+        <p class="text-xs text-slate-300 mb-3">${job.company}</p>
+        <p class="text-xs text-slate-400 mb-4">${job.description}</p>
+        <div class="grid grid-cols-2 gap-2 mb-4 text-xs text-slate-300">
+          <div class="flex items-center gap-1.5 bg-brand-surface p-2 rounded-lg">
+            <i data-lucide="clock" class="w-3.5 h-3.5 text-brand-mint"></i>
+            <span>${job.hours} часа</span>
+          </div>
+          <div class="flex items-center gap-1.5 bg-brand-surface p-2 rounded-lg">
+            <i data-lucide="map-pin" class="w-3.5 h-3.5 text-brand-yellow"></i>
+            <span>${job.location}</span>
+          </div>
+        </div>
+        <button onclick="openQuickApply(${job.id})" class="w-full bg-gradient-to-r from-brand-indigo to-brand-purple hover:brightness-110 text-white font-heading font-bold text-xs py-3 rounded-xl transition-all">
+          Откликнуться
+        </button>
+      </div>
+    `).join('');
+
+    lucide.createIcons();
+  }
+
+  function getCategoryLabel(category) {
+    const labels = {
+      courier: '🚲 Курьер',
+      promo: '📢 Промо',
+      assistant: '📦 Помощник',
+      online: '💻 Онлайн',
+      events: '🎪 Ивенты'
+    };
+    return labels[category] || category;
+  }
+
+  function setCategoryFilter(category) {
+    currentFilter = category;
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    const btnId = category === 'all' ? 'btnFilterAll' : `btnFilter${category.charAt(0).toUpperCase() + category.slice(1)}`;
+    document.getElementById(btnId)?.classList.add('active');
+    renderJobs();
+  }
+
+  function applyFilters() {
+    renderJobs();
+  }
+
+  function resetFilters() {
+    currentFilter = 'all';
+    document.getElementById('filterKeywordInput').value = '';
+    document.getElementById('filterHoursSelect').value = 'any';
+    document.getElementById('filterPaySelect').value = '0';
+    document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+    document.getElementById('btnFilterAll').classList.add('active');
+    renderJobs();
+  }
+
+  function searchFromHero() {
+    const location = document.getElementById('heroLocationInput').value;
+    document.getElementById('filterKeywordInput').value = location;
+    document.getElementById('vacancies').scrollIntoView({ behavior: 'smooth' });
+    renderJobs();
+  }
+
+  function openQuickApply(jobId) {
+    const job = jobs.find(j => j.id === jobId);
+    if (!job) return;
+    document.getElementById('modalJobTitle').textContent = job.title;
+    document.getElementById('modalCompanyInfo').textContent = `${job.company} • ${job.pay} ₽ за смену`;
+    document.getElementById('quickApplyModal').classList.remove('hidden');
+    document.getElementById('quickApplyModal').classList.add('flex');
+  }
+
+  function closeQuickApplyModal() {
+    document.getElementById('quickApplyModal').classList.add('hidden');
+    document.getElementById('quickApplyModal').classList.remove('flex');
+  }
+
+  function submitApplication() {
+    const name = document.getElementById('applyUserName').value;
+    const age = document.getElementById('applyUserAge').value;
+    const contact = document.getElementById('applyUserContact').value;
+    
+    if (!name || !contact) {
+      showToast('Заполни все поля!');
+      return;
+    }
+
+    showToast('Отклик отправлен! Подтверждение придет в течение 5 минут ⚡');
+    closeQuickApplyModal();
+  }
+
+  function toggleAuthModal() {
+    const modal = document.getElementById('authModal');
+    modal.classList.toggle('hidden');
+    modal.classList.toggle('flex');
+  }
+
+  function simulateTgLogin() {
+    showToast('Успешный вход через Telegram!');
+    toggleAuthModal();
+    document.getElementById('authBtnLabel').textContent = '@artem_teen';
+    document.getElementById('userBalanceBadge').classList.remove('hidden');
+  }
+
+  function closeApplicationsModal() {
+    document.getElementById('applicationsModal').classList.add('hidden');
+    document.getElementById('applicationsModal').classList.remove('flex');
+  }
+
+  function toggleAccordion(button) {
+    const content = button.nextElementSibling;
+    const icon = button.querySelector('i');
+    
+    if (content.classList.contains('hidden')) {
+      content.classList.remove('hidden');
+      content.classList.add('open');
+      icon.style.transform = 'rotate(180deg)';
+    } else {
+      content.classList.add('hidden');
+      content.classList.remove('open');
+      icon.style.transform = 'rotate(0deg)';
+    }
+  }
+
+  function updateCalculator() {
+    const hours = parseFloat(document.getElementById('calcHoursRange').value);
+    const days = parseInt(document.getElementById('calcDaysRange').value);
+    
+    document.getElementById('calcHoursLabel').textContent = `${hours} часа`;
+    document.getElementById('calcDaysLabel').textContent = `${days} дней`;
+
+    const daily = hours * calcRate;
+    const weekly = daily * days;
+    const monthly = weekly * 4;
+
+    document.getElementById('calcMonthlyTotal').textContent = monthly.toLocaleString();
+    document.getElementById('calcWeeklyNote').textContent = `≈ ${weekly.toLocaleString()} ₽ в неделю`;
+
+    const goalPrice = 19990; // AirPods Pro
+    const weeks = Math.ceil(goalPrice / weekly);
+    document.getElementById('calcGoalWeeks').textContent = `~ ${weeks} недель`;
+    
+    const progress = Math.min((weekly * weeks) / goalPrice * 100, 100);
+    document.getElementById('calcProgressBar').style.width = `${progress}%`;
+  }
+
+  function setCalcRate(rate, button) {
+    calcRate = rate;
+    document.querySelectorAll('.calc-rate-btn').forEach(btn => btn.classList.remove('active'));
+    button.classList.add('active');
+    updateCalculator();
+  }
+
+  function demoLiveApply() {
+    showToast('Отклик на Live смену отправлен! Ожидай подтверждения ⚡');
+  }
+
+  function openSupportToast() {
+    showToast('Чат поддержки открыт! Юрист ответит в течение 2 минут');
+  }
+
+  function showToast(message) {
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = message;
+    document.body.appendChild(toast);
+    
+    setTimeout(() => {
+      toast.remove();
+    }, 3000);
+  }
+
+  // Initial render
+  renderJobs();
+</script>
+
+</body>
+</html>
